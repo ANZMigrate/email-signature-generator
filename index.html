@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b1d43">
+  <meta name="description" content="Create a consistent ANZ Migrate staff email signature. Preview, copy and download HTML.">
+  <title>Email Signature Studio | ANZ Migrate</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css">
+  <script src="./script.js" defer></script>
+</head>
+<body>
+  <div class="site-shell">
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true"><span>A</span><span class="brand-dot"></span></div>
+        <div class="brand-type"><strong>ANZ MIGRATE</strong><small>BRAND TOOLS</small></div>
+      </div>
+      <div class="topbar-right"><span class="live-indicator"><i></i> Signature Studio</span><a class="back-link" href="https://www.anzmigrate.com/" target="_blank" rel="noopener noreferrer">Company website <span aria-hidden="true">↗</span></a></div>
+    </header>
+
+    <main class="main-content">
+      <div class="hero">
+        <div class="eyebrow"><span class="eyebrow-line"></span> INTERNAL BRAND TOOLKIT <span class="eyebrow-index">/ 001</span></div>
+        <h1>One brand.<br><span>Every inbox.</span></h1>
+        <p>Create polished, consistent email signatures for your team in seconds. Add staff details, preview instantly, and copy into your email client.</p>
+      </div>
+
+      <div class="workspace">
+        <section class="editor" aria-labelledby="editor-title">
+          <div class="panel-heading">
+            <div><span class="overline">01 / PERSONALISE</span><h2 id="editor-title">Signature details</h2></div>
+            <button type="button" class="text-button" id="resetBtn">↺ Reset</button>
+          </div>
+          <form id="signatureForm" autocomplete="on" novalidate>
+            <div class="form-section"><h3><span class="section-index">01</span> Staff information</h3>
+              <div class="fields">
+                <label class="field"><span>Full name <em>*</em></span><input id="fullName" name="name" type="text" value="Rafi Pratomo" required maxlength="100" placeholder="e.g. Jane Nguyen"></label>
+                <label class="field"><span>Job title <em>*</em></span><input id="jobTitle" name="title" type="text" value="Software Engineer" required maxlength="100" placeholder="e.g. Migration Consultant"></label>
+                <label class="field full"><span>Work email <em>*</em></span><input id="email" name="email" type="email" value="rafi.pratomo@anzmigrate.com" required maxlength="200" placeholder="name@anzmigrate.com"></label>
+                <label class="field full"><span>Phone number <span class="optional">Optional</span></span><input id="phone" name="phone" type="tel" maxlength="60" placeholder="e.g. +61 3 9021 2229"></label>
+              </div>
+            </div>
+            <div class="form-section"><h3><span class="section-index">02</span> Company branding</h3>
+              <div class="fields">
+                <label class="field"><span>Company name</span><input id="company" name="company" type="text" value="ANZ Migrate" maxlength="100"></label>
+                <label class="field"><span>Website</span><input id="website" name="website" type="url" value="https://www.anzmigrate.com/" maxlength="300"></label>
+                <label class="field full"><span>Locations <span class="optional">Separated by commas</span></span><textarea id="locations" name="locations" rows="2" maxlength="500">Australia, Singapore, Malaysia, Vietnam, Thailand, Indonesia, Philippines, Hong Kong, Laos</textarea></label>
+                <label class="field full"><span>Logo image URL <span class="optional">Public HTTPS PNG/JPG</span></span><input id="logoUrl" name="logoUrl" type="url" maxlength="1200" value="https://raw.githubusercontent.com/ANZMigrate/email-signature-generator/main/assets/anz-migrate-logo.png"></label>
+              </div>
+              <p class="field-note">The default logo is hosted publicly on ANZMigrate's GitHub. Images embedded as data URLs are not reliable in all email clients.</p>
+            </div>
+            <div class="form-section social-section"><h3><span class="section-index">03</span> Social channels</h3><p class="section-desc">Switch off a channel to hide it from the signature. You can update company links below.</p>
+              <div class="social-fields">
+                <div class="social-field"><label class="social-switch"><input type="checkbox" id="facebookOn" checked><span class="switch-visual"></span><span>Facebook</span></label><input aria-label="Facebook URL" id="facebookUrl" type="url" value="https://www.facebook.com/anzmigrate"></div>
+                <div class="social-field"><label class="social-switch"><input type="checkbox" id="xOn" checked><span class="switch-visual"></span><span>X / Twitter</span></label><input aria-label="X URL" id="xUrl" type="url" value="https://x.com/anzmigrate"></div>
+                <div class="social-field"><label class="social-switch"><input type="checkbox" id="youtubeOn" checked><span class="switch-visual"></span><span>YouTube</span></label><input aria-label="YouTube URL" id="youtubeUrl" type="url" value="https://www.youtube.com/anzmigrate"></div>
+                <div class="social-field"><label class="social-switch"><input type="checkbox" id="linkedinOn" checked><span class="switch-visual"></span><span>LinkedIn</span></label><input aria-label="LinkedIn URL" id="linkedinUrl" type="url" value="https://www.linkedin.com/company/anzmigrate"></div>
+                <div class="social-field"><label class="social-switch"><input type="checkbox" id="instagramOn" checked><span class="switch-visual"></span><span>Instagram</span></label><input aria-label="Instagram URL" id="instagramUrl" type="url" value="https://www.instagram.com/anzmigrate"></div>
+              </div>
+            </div>
+          </form>
+        </section>
+
+        <aside class="preview-panel" aria-label="Email signature preview and export">
+          <div class="preview-heading"><div><span class="overline">02 / PREVIEW</span><h2>Looking good.</h2></div><div class="preview-tag"><span class="preview-dot"></span> LIVE PREVIEW</div></div>
+          <div class="preview-canvas">
+            <div class="email-window">
+              <div class="window-top"><div class="window-dots"><i></i><i></i><i></i></div><span>NEW MESSAGE</span><div class="window-icon" aria-hidden="true">⌄</div></div>
+              <div class="email-header"><div><span>To</span><strong>colleague@example.com</strong></div><div><span>Subject</span><strong>Great connecting with you</strong></div></div>
+              <div class="email-body"><p>Kind regards,</p><div id="signaturePreview" aria-live="polite"></div></div>
+            </div>
+          </div>
+          <div class="actions">
+            <button type="button" id="copyRichBtn" class="primary-action"><span aria-hidden="true">▤</span> Copy signature <span class="arrow">↗</span></button>
+            <button type="button" id="downloadBtn" class="secondary-action"><span aria-hidden="true">↓</span> Download HTML</button>
+          </div>
+          <button type="button" class="source-toggle" id="sourceToggle" aria-expanded="false" aria-controls="sourcePanel">View signature HTML <span id="sourceCaret">⌄</span></button>
+          <div class="source-panel" id="sourcePanel" hidden><div class="source-head"><span>HTML source</span><button type="button" id="copyHtmlBtn">Copy code</button></div><pre><code id="sourceCode"></code></pre></div>
+          <div class="tips"><div class="tips-icon" aria-hidden="true">✦</div><div><strong>Ready for your email client</strong><p>Copy the signature and paste it into Gmail or Outlook signature settings. Public image links require your recipient's email client to allow external images.</p></div></div>
+          <div class="privacy-note"><span aria-hidden="true">◈</span> Your staff details stay in this browser. Nothing is submitted to a server.</div>
+        </aside>
+      </div>
+    </main>
+    <footer class="site-footer"><span>© ANZ MIGRATE <span class="footer-divider">/</span> INTERNAL TOOLS</span><span>MADE FOR CONSISTENCY. DESIGNED TO IMPRESS.</span></footer>
+  </div>
+  <div role="status" aria-live="polite" class="toast" id="toast"></div>
+</body>
+</html>
