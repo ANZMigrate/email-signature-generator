@@ -84,9 +84,11 @@
             </div>
           </div>
           <div class="actions">
-            <button type="button" id="copyRichBtn" class="primary-action"><span aria-hidden="true">▤</span> Copy signature <span class="arrow">↗</span></button>
+            <button type="button" id="copyRichBtn" class="primary-action" title="Copy the formatted signature to paste into Gmail or Outlook"><span aria-hidden="true">▤</span> Copy signature <span class="arrow">↗</span></button>
+            <button type="button" id="copyHtmlActionBtn" class="secondary-action" title="Copy the raw signature HTML markup as plain text"><span aria-hidden="true">&lt;/&gt;</span> Copy HTML</button>
             <button type="button" id="downloadBtn" class="secondary-action"><span aria-hidden="true">↓</span> Download HTML</button>
           </div>
+          <p class="copy-help"><strong>Copy signature</strong> pastes the formatted design; <strong>Copy HTML</strong> copies the editable source code.</p>
           <button type="button" class="source-toggle" id="sourceToggle" aria-expanded="false" aria-controls="sourcePanel">View signature HTML <span id="sourceCaret">⌄</span></button>
           <div class="source-panel" id="sourcePanel" hidden><div class="source-head"><span>HTML source</span><button type="button" id="copyHtmlBtn">Copy code</button></div><pre><code id="sourceCode"></code></pre></div>
           <div class="tips"><div class="tips-icon" aria-hidden="true">✦</div><div><strong>Ready for your email client</strong><p>Copy the signature and paste it into Gmail or Outlook signature settings. Public image links require your recipient's email client to allow external images.</p></div></div>
