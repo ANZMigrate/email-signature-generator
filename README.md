@@ -12,7 +12,7 @@ Uploaded files must have a public HTTPS address to work in sent email signatures
 
 **One-time setup by the Vercel project administrator:**
 
-1. In the Vercel project, open **Storage** → **Create Database** → **Blob**. Create a **Public** store connected to this project. Vercel automatically sets the server-only environment variable `BLOB_READ_WRITE_TOKEN` for the environments you select.
+1. In the Vercel project, open **Storage** and connect a **Public Blob** store to this specific project. New Vercel Blob connections typically use automatic OIDC authentication; no manual `BLOB_READ_WRITE_TOKEN` is needed. Older token-based connections can use the automatically supplied server-only `BLOB_READ_WRITE_TOKEN`. If you created a store at team level, explicitly connect it to the project under the store's **Projects** tab.
 2. Open **Settings** → **Environment Variables**. Add a secret `SIGNATURE_UPLOAD_KEY` with a long, random value (at least 20 characters recommended). Make it available in the production environment and preview environments where staff need to upload. **Do not prefix it with `VITE_`, `NEXT_PUBLIC_`, or expose it in HTML/JavaScript.**
 3. Redeploy if necessary so both environment variables are present in the running Vercel Functions.
 
