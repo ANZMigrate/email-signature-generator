@@ -52,6 +52,15 @@
                 <label class="field full"><span>Logo image URL <span class="optional">Public HTTPS PNG/JPG</span></span><input id="logoUrl" name="logoUrl" type="url" maxlength="1200" value="https://raw.githubusercontent.com/ANZMigrate/email-signature-generator/main/assets/anz-migrate-logo.png"></label>
               </div>
               <p class="field-note">The default logo is hosted publicly on ANZMigrate's GitHub. Images embedded as data URLs are not reliable in all email clients.</p>
+              <div class="image-upload-card">
+                <div class="image-upload-header"><div class="upload-symbol" aria-hidden="true">↑</div><div><strong>Upload a custom logo</strong><p>PNG, JPEG or WebP · maximum 1.5 MB</p></div></div>
+                <div class="image-upload-controls">
+                  <label class="field full"><span>Choose image</span><input id="logoFile" type="file" accept="image/png,image/jpeg,image/webp"></label>
+                  <label class="field full"><span>Upload access code <span class="optional">Provided by your administrator</span></span><input id="uploadAccessCode" type="password" autocomplete="off" placeholder="Required for secure uploads"></label>
+                  <div class="image-upload-bottom"><img id="uploadThumbnail" alt="Selected logo image preview" width="64" height="48" hidden><button id="uploadImageBtn" type="button" disabled>Upload & use image <span aria-hidden="true">↗</span></button></div>
+                </div>
+                <p id="imageUploadStatus" role="status" aria-live="polite" class="upload-status">Select a file to host it publicly through Vercel Blob.</p>
+              </div>
             </div>
             <div class="form-section social-section"><h3><span class="section-index">03</span> Social channels</h3><p class="section-desc">Switch off a channel to hide it from the signature. You can update company links below.</p>
               <div class="social-fields">
