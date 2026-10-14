@@ -4,7 +4,7 @@ A browser-based signature generator for ANZ Migrate employees, with branded soci
 
 ## Use
 
-Enter your staff information, edit the company details, and click **Copy signature** or **Download HTML**. The default company logo and icons are already hosted publicly on GitHub.
+Enter your staff information and edit the company details, then choose **Copy signature** (formatted rich-text HTML for Gmail or Outlook), **Copy HTML** (raw markup copied as text for development or manual editing), or **Download HTML** (a standalone HTML file). You can also expand **View signature HTML** to inspect and copy the same source. The default company logo and icons are hosted publicly on GitHub.
 
 ### Custom logo image upload (Vercel)
 
