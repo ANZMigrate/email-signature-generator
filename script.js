@@ -172,6 +172,102 @@ function download() {
   setTimeout(function() { URL.revokeObjectURL(url); }, 1000);
   announce("Signature HTML downloaded.");
 }
+// Optional Vercel Blob logo upload. A local file is only previewed here; it
+// is never embedded as a data URI in the exported email signature.
+const logoFileInput = document.getElementById("logoFile");
+const uploadAccessCode = document.getElementById("uploadAccessCode");
+const uploadImageBtn = document.getElementById("uploadImageBtn");
+const imageUploadStatus = document.getElementById("imageUploadStatus");
+const uploadThumbnail = document.getElementById("uploadThumbnail");
+const MAX_IMAGE_BYTES = 1500000;
+const ALLOWED_IMAGE_TYPES = ["image/png", "image/jpeg", "image/webp"];
+let thumbnailObjectUrl = "";
+
+function clearImageSelection() {
+  if (thumbnailObjectUrl) URL.revokeObjectURL(thumbnailObjectUrl);
+  thumbnailObjectUrl = "";
+  uploadThumbnail.hidden = true;
+  uploadThumbnail.removeAttribute("src");
+  uploadImageBtn.disabled = true;
+}
+function chooseImage() {
+  clearImageSelection();
+  const file = logoFileInput.files && logoFileInput.files[0];
+  if (!file) {
+    imageUploadStatus.textContent = "Select a file to host it publicly through Vercel Blob.";
+    return;
+  }
+  if (!ALLOWED_IMAGE_TYPES.includes(file.type)) {
+    imageUploadStatus.textContent = "Choose a PNG, JPEG, or WebP image.";
+    return;
+  }
+  if (file.size === 0 || file.size > MAX_IMAGE_BYTES) {
+    imageUploadStatus.textContent = "Image must be between 1 byte and 1.5 MB.";
+    return;
+  }
+  thumbnailObjectUrl = URL.createObjectURL(file);
+  uploadThumbnail.src = thumbnailObjectUrl;
+  uploadThumbnail.hidden = false;
+  uploadImageBtn.disabled = false;
+  imageUploadStatus.textContent = "Local preview only. Select Upload & use image to publish it for email recipients.";
+}
+async function readBase64(file) {
+  return new Promise(function(resolve, reject) {
+    const reader = new FileReader();
+    reader.onerror = function() { reject(new Error("Unable to read this image.")); };
+    reader.onload = function() {
+      const result = String(reader.result || "");
+      const comma = result.indexOf(",");
+      if (comma === -1) reject(new Error("Invalid image data."));
+      else resolve(result.slice(comma + 1));
+    };
+    reader.readAsDataURL(file);
+  });
+}
+async function uploadLogoImage() {
+  const file = logoFileInput.files && logoFileInput.files[0];
+  const secret = uploadAccessCode.value;
+  if (!file || !ALLOWED_IMAGE_TYPES.includes(file.type) || file.size > MAX_IMAGE_BYTES || file.size === 0) {
+    imageUploadStatus.textContent = "Please choose a supported image up to 1.5 MB.";
+    return;
+  }
+  if (!secret) {
+    imageUploadStatus.textContent = "Enter the upload access code supplied by your administrator.";
+    uploadAccessCode.focus();
+    return;
+  }
+  uploadImageBtn.disabled = true;
+  uploadImageBtn.textContent = "Uploading…";
+  imageUploadStatus.textContent = "Uploading securely to public image storage…";
+  try {
+    const base64 = await readBase64(file);
+    const result = await fetch("/api/upload", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + secret
+      },
+      body: JSON.stringify({ filename: file.name, contentType: file.type, base64 })
+    });
+    const data = await result.json().catch(function() { return {}; });
+    if (!result.ok) throw new Error(data.error || ("Upload failed (HTTP " + result.status + ")."));
+    const publicUrl = validUrl(data.url);
+    if (!publicUrl) throw new Error("The upload did not return a valid HTTPS image URL.");
+    document.getElementById("logoUrl").value = publicUrl;
+    uploadAccessCode.value = "";
+    imageUploadStatus.textContent = "Uploaded successfully. The public image URL is now used in the signature.";
+    update();
+    announce("Image uploaded and signature updated.");
+  } catch (error) {
+    imageUploadStatus.textContent = error.message || "Image upload failed. Check the Vercel configuration.";
+  } finally {
+    uploadImageBtn.disabled = false;
+    uploadImageBtn.textContent = "Upload & use image ↗";
+  }
+}
+logoFileInput.addEventListener("change", chooseImage);
+uploadImageBtn.addEventListener("click", uploadLogoImage);
+
 form.addEventListener("input", update);
 form.addEventListener("change", update);
 form.addEventListener("submit", function(e) { e.preventDefault(); });
@@ -183,6 +279,8 @@ document.getElementById("resetBtn").addEventListener("click", function() {
     if (el.type === "checkbox") el.checked = startValues[el.id];
     else el.value = startValues[el.id];
   });
+  clearImageSelection();
+  imageUploadStatus.textContent = "Select a file to host it publicly through Vercel Blob.";
   update(); announce("Restored the default ANZ Migrate signature.");
 });
 document.getElementById("sourceToggle").addEventListener("click", function() {
