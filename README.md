@@ -1,44 +1,55 @@
-# ANZ Migrate · Email Signature Studio
+# ANZ Migrate — Email Signature Studio
 
-A self-contained, mobile-friendly HTML signature generator for ANZ Migrate staff, based on the October 2026 email signature design. No package installation, API keys, build process, or employee database required.
+A browser-based signature generator for ANZ Migrate employees, with branded social icons, Gmail/Outlook-friendly HTML, and **optional image upload on Vercel**.
 
-## Open the generator
+## Use
 
-If GitHub Pages is already publishing the **main** branch at the repository root, open:
+Enter your staff information, edit the company details, and click **Copy signature** or **Download HTML**. The default company logo and icons are already hosted publicly on GitHub.
 
-**https://anzmigrate.github.io/email-signature-generator/**
+### Custom logo image upload (Vercel)
 
-If that URL is not yet active, open **ANZMigrate/email-signature-generator → Settings → Pages** and configure **Deploy from a branch**, **main**, **/(root)**. The repository is standalone, and Pages publishes only this signature generator. GitHub Pages may take several minutes to publish.
+Uploaded files must have a public HTTPS address to work in sent email signatures. This app uses Vercel Blob for that address, **not** temporary local object URLs or embedded base64 images.
 
-You can also download the three web files and assets folder and open index.html locally. Rich clipboard APIs generally work best on HTTPS or localhost; HTML download works locally.
+**One-time setup by the Vercel project administrator:**
 
-## For staff
+1. In the Vercel project, open **Storage** → **Create Database** → **Blob**. Create a **Public** store connected to this project. Vercel automatically sets the server-only environment variable `BLOB_READ_WRITE_TOKEN` for the environments you select.
+2. Open **Settings** → **Environment Variables**. Add a secret `SIGNATURE_UPLOAD_KEY` with a long, random value (at least 20 characters recommended). Make it available in the production environment and preview environments where staff need to upload. **Do not prefix it with `VITE_`, `NEXT_PUBLIC_`, or expose it in HTML/JavaScript.**
+3. Redeploy if necessary so both environment variables are present in the running Vercel Functions.
 
-1. Enter your name, job title, work email, and optional phone number.
-2. Check the website, location list, logo and enabled social profiles.
-3. See the signature update live in the email preview.
-4. Click **Copy signature** and paste it into Gmail or Outlook signature settings. If rich copying is blocked by your browser, use **Download HTML**, open the downloaded file in a browser, and copy the rendered signature.
+The uploaded files live in the Blob store as public, uniquely named URLs. Vercel Blob storage and transfer may incur charges. Because these images appear in email signatures, only upload artwork that is meant to be public.
 
-For Gmail: **Settings → See all settings → General → Signature**.  
-For Outlook: open your account's **Signature** settings and paste the rendered signature.
+**Staff use:**
 
-## Brand assets
+1. In **Company branding** → **Upload a custom logo**, choose a PNG, JPEG, or WebP image (maximum 1.5 MB).
+2. Enter the **upload access code** supplied by your administrator.
+3. Click **Upload & use image**. On success, the Logo image URL is updated to the public Vercel Blob address and appears in the signature preview.
+4. Copy the signature or download its HTML.
 
-The original ANZ Migrate logo and the five PNG social icons are served from this public GitHub repository. Generated signatures use absolute HTTPS raw GitHub image URLs, not embedded data URIs. That improves cross-client reliability, but recipient email apps may still block remote images by default.
+Uploads are limited to 1.5 MB. Image file signatures are checked on the server; SVG and potentially executable formats are rejected. The endpoint requires a server-side access code so the public website cannot be used for unrestricted anonymous uploads. Keep the code confidential, rotate it in Vercel if exposed, and be aware that any employee with the code can create public images in your Blob store.
 
-- Logo: assets/anz-migrate-logo.png
-- Icons: facebook.png, x.png, youtube.png, linkedin.png, instagram.png
+**Vercel project requirement:** The repository must be deployed on Vercel with serverless Functions support (the endpoint is `/api/upload`). GitHub Pages or opening `index.html` as a file still support signature generation and image URLs, but **not image uploads**.
 
-The icon x.png replaces the obsolete Twitter bird. The signature layout uses HTML tables and inline styles for Gmail/Outlook compatibility.
+### Existing image URL
 
-## Updating defaults
+If your staff already have an image hosted publicly, they can paste its HTTPS URL directly into the **Logo image URL** field without uploading. A copied HTML signature must refer to an image that remains publicly accessible.
 
-Initial staff details and company links are in index.html. The generated HTML template and icon paths are in script.js. Shared display styles for the web tool are in styles.css.
+## Repository layout
 
-When changing the image host or file path, update both the default Logo image URL in index.html and ASSETS in script.js.
+- `index.html` — web form and live signature preview
+- `styles.css` — responsive generator UI
+- `script.js` — signature builder and upload UI
+- `api/upload.js` — Vercel Node.js Function; access-code check, image verification, Blob storage
+- `package.json` — pinned `@vercel/blob` server-side dependency
+- `assets/` — public default logo and Facebook, X, YouTube, LinkedIn, Instagram icons
 
-## Privacy and caveats
+## Email-client notes
 
-Employee input is processed entirely in the browser: no backend, form submission, analytics, or local storage is included. Standard network requests are made for the web fonts and hosted images. The generator does not create accounts or store staff profiles. Always check a signature in the actual target email client before distributing it company-wide.
+The exported signature uses inline styles and an HTML table for common email clients. Remote images can still be blocked by the recipient's email settings. Always test a signature in your organization's actual Gmail or Outlook configuration before broad rollout.
 
-**Repository location:** the root of the dedicated [ANZMigrate/email-signature-generator](https://github.com/ANZMigrate/email-signature-generator) repository.
+## Privacy
+
+The generator does not save employees' text fields to a database or local storage. For image uploads only, the chosen file is transmitted to the Vercel Function and stored **publicly** in the team's Vercel Blob store. The upload access code is transmitted in the request header and verified server-side; it is not embedded into generated signatures or saved by the application.
+
+## Deployment
+
+The intended source is [github.com/ANZMigrate/email-signature-generator](https://github.com/ANZMigrate/email-signature-generator). If Vercel is connected to the `main` branch, Git pushes normally initiate a new deployment. The administrator must still set up Blob storage and secrets as described above.
