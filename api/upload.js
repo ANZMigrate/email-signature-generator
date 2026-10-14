@@ -39,8 +39,10 @@ export default async function handler(req, res) {
     res.setHeader("Allow", "POST");
     return reject(res, 405, "Only POST uploads are supported.");
   }
-  if (!process.env.SIGNATURE_UPLOAD_KEY || !process.env.BLOB_READ_WRITE_TOKEN) {
-    return reject(res, 503, "Uploads are not configured yet. Ask your administrator to connect Vercel Blob and set the upload access code.");
+  // Vercel Blob supports OIDC on new project connections, and legacy stores
+  // can use BLOB_READ_WRITE_TOKEN. Let the SDK resolve either credential.
+  if (!process.env.SIGNATURE_UPLOAD_KEY) {
+    return reject(res, 503, "Uploads are not configured yet. Ask your administrator to set SIGNATURE_UPLOAD_KEY in Vercel.");
   }
   if (!verifyAccess(req)) return reject(res, 401, "Incorrect upload access code.");
   if (!String(req.headers["content-type"] || "").startsWith("application/json")) {
