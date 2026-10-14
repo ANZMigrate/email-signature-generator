@@ -272,6 +272,7 @@ form.addEventListener("input", update);
 form.addEventListener("change", update);
 form.addEventListener("submit", function(e) { e.preventDefault(); });
 document.getElementById("copyRichBtn").addEventListener("click", copyRich);
+document.getElementById("copyHtmlActionBtn").addEventListener("click", copyCode);
 document.getElementById("downloadBtn").addEventListener("click", download);
 document.getElementById("copyHtmlBtn").addEventListener("click", copyCode);
 document.getElementById("resetBtn").addEventListener("click", function() {
