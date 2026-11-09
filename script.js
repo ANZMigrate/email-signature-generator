@@ -50,6 +50,16 @@ function textOnly(html) {
   el.innerHTML = html;
   return el.innerText || el.textContent || "";
 }
+// Email clients vary in dark-mode support; these rules are progressive enhancements.
+const SIGNATURE_THEME = '<style type="text/css">@media (prefers-color-scheme: dark) {' +
+  '.anz-signature{background-color:transparent!important;color:#e9eff9!important;}' +
+  '.anz-signature .anz-name,.anz-signature .anz-brand{color:#f4f7ff!important;}' +
+  '.anz-signature .anz-secondary,.anz-signature .anz-company,.anz-signature .anz-contact{color:#d2dced!important;}' +
+  '.anz-signature .anz-link{color:#9fc7ff!important;}' +
+  '.anz-signature .anz-locations{color:#bdcbe0!important;border-top-color:#64748b!important;}' +
+  '.anz-signature .anz-divider{border-left-color:#64748b!important;}' +
+  '.anz-signature .anz-separator{color:#91a4bf!important;}' +
+  '}</style>';
 function signatureMarkup(data) {
   const website = validUrl(data.website);
   const logo = validUrl(data.logo);
@@ -68,27 +78,27 @@ function signatureMarkup(data) {
   const brandImage = logo
     ? '<a href="' + htmlEscape(website || "https://www.anzmigrate.com/") + '" style="text-decoration:none;">'
       + '<img src="' + htmlEscape(logo) + '" width="118" height="118" alt="' + htmlEscape(data.company || "ANZ Migrate") + '" style="width:118px;height:118px;display:block;border:0;outline:none;text-decoration:none;object-fit:contain;"></a>'
-    : '<span style="display:block;font-size:16px;font-weight:700;color:#142d6b;">' + htmlEscape(data.company || "ANZ Migrate") + '</span>';
+    : '<span class="anz-brand" style="display:block;font-size:16px;font-weight:700;color:#142d6b;">' + htmlEscape(data.company || "ANZ Migrate") + '</span>';
   const emailRow = email
-    ? '<tr><td style="font:12px/19px Arial,Helvetica,sans-serif;"><a href="' + htmlEscape(emailHref || "#") + '" style="color:#33465d;text-decoration:none;">' + htmlEscape(email) + '</a></td></tr>' : "";
+    ? '<tr><td style="font:12px/19px Arial,Helvetica,sans-serif;"><a href="' + htmlEscape(emailHref || "#") + '" class="anz-contact" style="color:#33465d;text-decoration:none;">' + htmlEscape(email) + '</a></td></tr>' : "";
   const phoneRow = data.phone
     ? '<tr><td style="font:12px/19px Arial,Helvetica,sans-serif;"><a href="tel:' + htmlEscape(phoneNumber) + '" style="color:#33465d;text-decoration:none;">' + htmlEscape(data.phone) + '</a></td></tr>' : "";
   const websiteRow = website
-    ? '<tr><td style="font:12px/19px Arial,Helvetica,sans-serif;"><a href="' + htmlEscape(website) + '" target="_blank" rel="noopener noreferrer" style="color:#204c94;text-decoration:none;font-weight:bold;">' + htmlEscape(website.replace(/^https?:\/\//, "").replace(/\/$/, "")) + '</a></td></tr>' : "";
+    ? '<tr><td style="font:12px/19px Arial,Helvetica,sans-serif;"><a href="' + htmlEscape(website) + '" target="_blank" rel="noopener noreferrer" class="anz-link" style="color:#204c94;text-decoration:none;font-weight:bold;">' + htmlEscape(website.replace(/^https?:\/\//, "").replace(/\/$/, "")) + '</a></td></tr>' : "";
   const footer = locations.length
-    ? '<tr><td colspan="2" style="padding:10px 2px 2px;border-top:1px solid #e4eaf3;color:#718097;font:10px/16px Arial,Helvetica,sans-serif;">'
+    ? '<tr><td colspan="2" class="anz-locations" style="padding:10px 2px 2px;border-top:1px solid #e4eaf3;color:#718097;font:10px/16px Arial,Helvetica,sans-serif;">'
       + locations.map(htmlEscape).join(' &nbsp;&middot;&nbsp; ') + '</td></tr>' : "";
 
   // Fixed-layout tables + inline CSS are deliberate for Outlook, Gmail, and Apple Mail.
-  return '<table role="presentation" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;width:100%;max-width:570px;background-color:#ffffff;font-family:Arial,Helvetica,sans-serif;color:#1b2b45;">'
+  return '<table role="presentation" class="anz-signature" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;width:100%;max-width:570px;background-color:transparent;font-family:Arial,Helvetica,sans-serif;color:#1b2b45;">'
     + '<tr><td colspan="2" height="3" style="height:3px;line-height:3px;font-size:1px;background-color:#142d6b;">&nbsp;</td></tr>'
     + '<tr>'
     + '<td valign="middle" width="135" style="vertical-align:middle;width:135px;padding:17px 16px 16px 2px;">' + brandImage + '</td>'
-    + '<td valign="top" style="vertical-align:top;border-left:1px solid #dce4ef;padding:15px 0 15px 19px;">'
+    + '<td valign="top" class="anz-divider" style="vertical-align:top;border-left:1px solid #dce4ef;padding:15px 0 15px 19px;">'
     + '<table role="presentation" cellspacing="0" cellpadding="0" border="0" style="border-collapse:collapse;">'
-    + '<tr><td style="font:bold 18px/23px Arial,Helvetica,sans-serif;color:#142d6b;">' + htmlEscape(data.name || "Your name") + '</td></tr>'
-    + '<tr><td style="padding-top:3px;font:12px/18px Arial,Helvetica,sans-serif;color:#53637a;">' + htmlEscape(data.title || "Your title")
-    + (data.company ? ' <span style="color:#aeb9c8;">|</span> <span style="font-weight:bold;color:#344864;">' + htmlEscape(data.company) + '</span>' : "") + '</td></tr>'
+    + '<tr><td class="anz-name" style="font:bold 18px/23px Arial,Helvetica,sans-serif;color:#142d6b;">' + htmlEscape(data.name || "Your name") + '</td></tr>'
+    + '<tr><td class="anz-secondary" style="padding-top:3px;font:12px/18px Arial,Helvetica,sans-serif;color:#53637a;">' + htmlEscape(data.title || "Your title")
+    + (data.company ? ' <span class="anz-separator" style="color:#aeb9c8;">|</span> <span class="anz-company" style="font-weight:bold;color:#344864;">' + htmlEscape(data.company) + '</span>' : "") + '</td></tr>'
     + '<tr><td height="10" style="height:10px;font-size:1px;line-height:10px;">&nbsp;</td></tr>'
     + emailRow + phoneRow + websiteRow
     + (channels ? '<tr><td height="11" style="height:11px;font-size:1px;line-height:11px;">&nbsp;</td></tr>'
@@ -97,8 +107,8 @@ function signatureMarkup(data) {
 }
 function update() {
   currentSignature = signatureMarkup(getData());
-  preview.innerHTML = currentSignature;
-  sourceCode.textContent = currentSignature;
+  preview.innerHTML = SIGNATURE_THEME + currentSignature;
+  sourceCode.textContent = SIGNATURE_THEME + currentSignature;
 }
 function announce(message) {
   toast.textContent = message;
@@ -135,7 +145,7 @@ async function copyRich() {
   try {
     if (navigator.clipboard && window.ClipboardItem) {
       const payload = new ClipboardItem({
-        "text/html": new Blob([currentSignature], { type: "text/html" }),
+        "text/html": new Blob([SIGNATURE_THEME + currentSignature], { type: "text/html" }),
         "text/plain": new Blob([textOnly(currentSignature)], { type: "text/plain" })
       });
       await navigator.clipboard.write([payload]);
@@ -150,18 +160,18 @@ async function copyRich() {
 async function copyCode() {
   if (!ready()) return;
   try {
-    await navigator.clipboard.writeText(currentSignature);
+    await navigator.clipboard.writeText(SIGNATURE_THEME + currentSignature);
     announce("HTML source copied.");
   } catch (_) {
     const node = document.createElement("textarea");
-    node.value = currentSignature; document.body.append(node);
+    node.value = SIGNATURE_THEME + currentSignature; document.body.append(node);
     node.select(); const copied = document.execCommand("copy"); node.remove();
     announce(copied ? "HTML source copied." : "Clipboard unavailable. Use Download HTML.");
   }
 }
 function download() {
   if (!ready()) return;
-  const fullHtml = '<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Email signature</title></head><body style="margin:24px;background:#fff;">'
+  const fullHtml = '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="color-scheme" content="light dark"><title>Email signature</title>" + SIGNATURE_THEME + "</head><body style="margin:24px;background:transparent;">'
     + currentSignature + '</body></html>';
   const blob = new Blob([fullHtml], { type: "text/html;charset=utf-8" });
   const url = URL.createObjectURL(blob);
