@@ -67,7 +67,7 @@ function signatureMarkup(data) {
   }).join("");
   const brandImage = logo
     ? '<a href="' + htmlEscape(website || "https://www.anzmigrate.com/") + '" style="text-decoration:none;">'
-      + '<img src="' + htmlEscape(logo) + '" width="118" height="63" alt="' + htmlEscape(data.company || "ANZ Migrate") + '" style="width:118px;height:63px;display:block;border:0;outline:none;text-decoration:none;"></a>'
+      + '<img src="' + htmlEscape(logo) + '" width="118" height="118" alt="' + htmlEscape(data.company || "ANZ Migrate") + '" style="width:118px;height:118px;display:block;border:0;outline:none;text-decoration:none;object-fit:contain;"></a>'
     : '<span style="display:block;font-size:16px;font-weight:700;color:#142d6b;">' + htmlEscape(data.company || "ANZ Migrate") + '</span>';
   const emailRow = email
     ? '<tr><td style="font:12px/19px Arial,Helvetica,sans-serif;"><a href="' + htmlEscape(emailHref || "#") + '" style="color:#33465d;text-decoration:none;">' + htmlEscape(email) + '</a></td></tr>' : "";
