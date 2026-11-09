@@ -3,11 +3,11 @@
 // Client-side only: staff information is never sent to a backend.
 const ASSETS = "https://raw.githubusercontent.com/ANZMigrate/email-signature-generator/main/assets/";
 const SOCIALS = [
-  { key: "facebook", label: "Facebook", image: "facebook.png" },
-  { key: "x", label: "X", image: "x.png" },
-  { key: "youtube", label: "YouTube", image: "youtube.png" },
-  { key: "linkedin", label: "LinkedIn", image: "linkedin.png" },
-  { key: "instagram", label: "Instagram", image: "instagram.png" }
+  { key: "facebook", label: "Facebook", image: "facebook.png?v=clean-corners-20261109" },
+  { key: "x", label: "X", image: "x.png?v=clean-corners-20261109" },
+  { key: "youtube", label: "YouTube", image: "youtube.png?v=clean-corners-20261109" },
+  { key: "linkedin", label: "LinkedIn", image: "linkedin.png?v=clean-corners-20261109" },
+  { key: "instagram", label: "Instagram", image: "instagram.png?v=clean-corners-20261109" }
 ];
 const form = document.getElementById("signatureForm");
 const preview = document.getElementById("signaturePreview");
