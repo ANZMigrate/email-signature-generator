@@ -171,7 +171,7 @@ async function copyCode() {
 }
 function download() {
   if (!ready()) return;
-  const fullHtml = '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="color-scheme" content="light dark"><title>Email signature</title>" + SIGNATURE_THEME + "</head><body style="margin:24px;background:transparent;">'
+  const fullHtml = '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="color-scheme" content="light dark"><title>Email signature</title>' + SIGNATURE_THEME + '</head><body style="margin:24px;background:transparent;">'
     + currentSignature + '</body></html>';
   const blob = new Blob([fullHtml], { type: "text/html;charset=utf-8" });
   const url = URL.createObjectURL(blob);
